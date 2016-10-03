@@ -1,0 +1,218 @@
+﻿<html>
+    <head>
+    	<title>Snake</title>
+    	<script src="jquery-collision.min.js"></script>
+    	<script src="jquery-1.8.3.min.js"></script>
+    	<script src="jquery-collision.js"></script>
+   		<script>
+		var velocidade = 0; 
+		var valordirecao;
+		var pos_snake;	
+		var pos_food;
+		var tempo=200;
+		var pontuacao=0;
+
+		function inicializa()
+			{
+			    //Objeto Snake.
+				var objeto_snake = document.getElementById("snake");	
+				objeto_snake.style.position = "absolute";
+				objeto_snake.style.width = "20px";
+				objeto_snake.style.height = "20px";
+				objeto_snake.style.left= "200";
+				objeto_snake.style.top= "200px";
+				objeto_snake.style.backgroundColor = "black";
+				//Objeto Campo.
+				var objeto_campo = document.getElementById("campo");
+				objeto_campo.style.position= "absolute";
+				objeto_campo.style.width = "1262px";
+				objeto_campo.style.height = "602px";
+				objeto_campo.style.left = "59px";
+				objeto_campo.style.top= "19px";
+				objeto_campo.style.backgroundColor = "gray";
+
+				var objeto_food = document.getElementById("comida");
+				objeto_food.style.position="absolute";
+				objeto_food.style.width="20px";
+				objeto_food.style.height="20px";
+				objeto_food.style.backgroundColor="yellow";
+
+				var objeto_depurador = document.getElementById("depurador");
+				objeto_depurador.style.position="absolute";
+				objeto_depurador.style.width="400px";
+				objeto_depurador.style.height="120px";
+				objeto_depurador.style.left= "5px";
+				objeto_depurador.style.top= "5px";
+				objeto_depurador.style.backgroundColor="gray";
+
+				desenharFood();
+			}
+
+		function movimentos()
+			{	
+				valordirecao = event.key;
+				if(valordirecao=="Left" || valordirecao=="ArrowLeft")
+				{	
+					clearInterval(velocidade);
+					velocidade=setInterval(esquerda,tempo);
+				}
+				else if(valordirecao=="Right" || valordirecao=="ArrowRight")
+						{
+							clearInterval(velocidade);
+							velocidade=setInterval(direita,tempo);	
+						}
+						else if(valordirecao=="Up" || valordirecao=="ArrowUp")
+									{
+										clearInterval(velocidade);
+										velocidade=setInterval(cima,tempo);	
+									}
+									else if(valordirecao=="Down" || valordirecao=="ArrowDown")
+											{
+												clearInterval(velocidade);
+												velocidade=setInterval(baixo,tempo);
+											}	
+			}
+			function desenharFood()
+			{
+				var objeto_food = document.getElementById("comida");
+				var lin=Math.random()*1250;
+				var col=Math.random()*550;
+				objeto_food.style.left=lin;
+				objeto_food.style.top=col;
+				tempo=tempo-8;
+				pontuacao=pontuacao+10;
+
+			} 
+
+			function depurador()
+			{
+				var objeto_depurador_comida = document.getElementById("depuradorcomida");
+				var objeto_depurador_snake = document.getElementById("depuradorsnake");
+				var objeto_depurador_velocidade = document.getElementById("depuradorvelocidade")
+				var conteudo_comida,conteudo_snake,conteudo_velocidade;
+
+				conteudo_velocidade="<p id='depuradorvelocidade'>Pontuação: "+Number(pontuacao-10)+" </p>";
+				conteudo_comida="<p id='depurador'>Comida | Left: "+pos_food.left.toPrecision(4)+" | Top: "+pos_food.top.toPrecision(4)+"</p>"
+				conteudo_snake="<p id='depurador'>Snake | Left: "+pos_snake.left.toPrecision(4)+" | Top: "+pos_snake.top.toPrecision(4)+"</p>"
+				objeto_depurador_comida.innerHTML = conteudo_comida;
+				objeto_depurador_snake.innerHTML = conteudo_snake;
+				objeto_depurador_velocidade.innerHTML=conteudo_velocidade;
+			}
+			function end()
+			{
+				clearInterval(velocidade);
+				alert("Você Perdeu !!");
+				tempo=0;
+			}
+
+			function esquerda()
+			{
+
+				var objeto_snake = document.getElementById("snake");	
+				var objeto_food = document.getElementById("comida");
+				objeto_snake.style.left = Number(objeto_snake.style.left.replace("px","")) - 20;
+				pos_snake=objeto_snake.getBoundingClientRect();
+				pos_food=objeto_food.getBoundingClientRect();
+				depurador();
+				if (pos_snake.left<60)
+				{
+					end();
+				}
+				else
+				{
+					var colisao = $("#snake").collision("#comida");
+					if (colisao.length != 0)	
+					{
+						desenharFood();
+					}
+				}
+				
+
+			}
+		
+		function direita()
+			{
+
+				var objeto_snake = document.getElementById("snake");	
+				var objeto_food = document.getElementById("comida");							
+				objeto_snake.style.left = Number(objeto_snake.style.left.replace("px","")) + 20;
+				pos_snake=objeto_snake.getBoundingClientRect();
+				pos_food=objeto_food.getBoundingClientRect();
+				depurador();
+				if (pos_snake.left>1300)
+				{
+					end();
+				}
+				else
+				{
+					var colisao = $("#snake").collision("#comida");
+					if (colisao.length != 0)	
+					{
+						desenharFood();
+					}
+				}
+		
+			}
+			
+		function cima()
+			{
+
+				var objeto_snake = document.getElementById("snake");
+				var objeto_food = document.getElementById("comida");							
+				objeto_snake.style.top = Number(objeto_snake.style.top.replace("px","")) - 20;
+				pos_snake=objeto_snake.getBoundingClientRect();
+				pos_food=objeto_food.getBoundingClientRect();
+				depurador();
+				if (pos_snake.top<20)
+				{
+					end();
+				}
+				else
+				{
+					var colisao = $("#snake").collision("#comida");
+					if (colisao.length != 0)	
+					{
+						desenharFood();
+					}
+				}
+			}
+
+		function baixo()
+			{
+
+				var objeto_snake = document.getElementById("snake");	
+				var objeto_food = document.getElementById("comida");	
+				objeto_snake.style.top = Number(objeto_snake.style.top.replace("px","")) + 20;
+				pos_snake=objeto_snake.getBoundingClientRect();
+				pos_food=objeto_food.getBoundingClientRect();
+
+				depurador();
+				if (pos_snake.top>600)
+				{
+					end();
+				}
+				else
+				{
+					var colisao = $("#snake").collision("#comida");
+					if (colisao.length != 0)	
+					{
+						desenharFood();
+
+					}
+				}
+			} 
+		</script>
+    </head>
+    <body onload="inicializa()" onkeydown="movimentos()">
+    
+    <div id="campo">   
+   	 	<div id="depurador">
+   	 		<p id="depuradorvelocidade">Pontuação: 0</p>
+    		<p id="depuradorcomida">Comida | Left: 0 | Top: 0</p>
+    		<p id="depuradorsnake">Snake   | Left: 0 | Top: 0</p>
+    	</div> 
+    	<div id="comida"></div>
+    </div>
+    <div id="snake"></div>
+    </body>
+</html>
