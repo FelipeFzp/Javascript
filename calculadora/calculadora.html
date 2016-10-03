@@ -1,0 +1,148 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			var operacao, valor1;
+			
+			
+			function EscreveNumero(valor)
+			{
+				var objDisplay;
+				objDisplay = document.getElementById("display");
+				
+				objDisplay.value = objDisplay.value + valor;
+			}
+			
+			function Limpar()
+			{
+				var objDisplay;
+				objDisplay = document.getElementById("display");
+				
+				objDisplay.value = "";
+				valor1 = 0;
+				operacao = "";
+			}
+			
+			function RecebeOperacao(operador)
+			{
+				var objDisplay;
+				objDisplay = document.getElementById("display");			
+							
+				operacao = operador;
+				
+				valor1 = Number(objDisplay.value);
+				
+				objDisplay.value = "";
+			}
+			
+			function ExecutarOperacao()
+			{
+				var valor2, resultado;
+				var objDisplay;
+				
+				objDisplay = document.getElementById("display");
+				
+				valor2 = Number(objDisplay.value);
+				
+				if (operacao == "+")
+					resultado = valor1 + valor2;
+				else if (operacao == "-")
+					resultado = valor1 - valor2;
+				else if (operacao == "*")
+					resultado = valor1 * valor2;
+				else if (operacao == "/")
+					resultado = valor1 / valor2;
+					
+				objDisplay.value = resultado;
+				
+			}
+			
+			function RemoveValor()
+			{
+				var objDisplay, conteudo;
+				
+				objDisplay = document.getElementById("display");
+				
+				conteudo = objDisplay.value;
+				
+				if (conteudo.length > 0)
+					conteudo = conteudo.substring((conteudo.length - (conteudo.length-1)));
+					
+				objDisplay.value = conteudo;
+			}
+		
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td colspan="4">
+					<input type="text" id="display" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" onclick="EscreveNumero(7)" value="7" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(8)" value="8" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(9)" value="9" />
+				</td>
+				<td>
+					<input type="button" onclick="RecebeOperacao('+')" value="+" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" onclick="EscreveNumero(4)" value="4" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(5)" value="5" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(6)" value="6" />
+				</td>
+				<td>
+					<input type="button" onclick="RecebeOperacao('-')" value="-" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" onclick="EscreveNumero(1)" value="1" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(2)" value="2" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(3)" value="3" />
+				</td>
+				<td>
+					<input type="button" onclick="RecebeOperacao('*')" value="*" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" onclick="Limpar()" value="CL" />
+				</td>
+				<td>
+					<input type="button" onclick="EscreveNumero(0)" value="0" />
+				</td>
+				<td>
+					<input type="button" onclick="ExecutarOperacao()" value="=" />
+				</td>
+				<td>
+					<input type="button" onclick="RecebeOperacao('/')" value="/" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" onclick="EscreveNumero(0)" value="." />
+				</td>
+				<td>
+					<input type="button" onclick="RemoveValor()" value="<" />
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
